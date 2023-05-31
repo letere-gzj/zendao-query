@@ -55,13 +55,12 @@ public class PrintServiceImpl implements PrintService {
             }
         }
         // 爬虫查询bug
-        String cookie = bugService.getCookie();
-        List<BugDetail> bugDetails = bugService.getBugDetails(cookie, time.getValue());
+        List<BugDetail> bugDetails = bugService.getBugDetails(time.getValue());
         // 打印bug信息
         if (Objects.equals(queryTypeEnum, QueryTypeEnum.SIMPLE)) {
             this.simplePrint(bugDetails, time);
         } else {
-            bugService.fillBugDetails(cookie, bugDetails);
+            bugService.fillBugDetails(bugDetails);
             this.detailedPrint(bugDetails, time);
         }
         // 文件导出

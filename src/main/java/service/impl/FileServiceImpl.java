@@ -56,7 +56,7 @@ public class FileServiceImpl implements FileService {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        String[] paramStrs = conf.split("\n");
+        String[] paramStrs = conf.split("\r\n");
         Map<String, String> paramMap = new HashMap<>();
         for (String paramStr : paramStrs) {
             String[] param = paramStr.split(": ");
