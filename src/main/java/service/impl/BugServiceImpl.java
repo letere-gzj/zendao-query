@@ -1,5 +1,6 @@
 package service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpUtil;
 import constant.ConfParamConstant;
 import constant.ZendaoConstant;
@@ -26,7 +27,7 @@ public class BugServiceImpl implements BugService {
     @Override
     public List<BugDetail> getBugDetails(String time) {
         // 正则匹配出bug
-        String htmlText = this.getDynamicHtmlText(confParams.get(ConfParamConstant.COOKIE), time);
+        String htmlText = this.getDynamicHtmlText(confParams.get(ConfParamConstant.COOKIE), time).toString();
         String bugPattern = "<span class='label-action'> 解决了</span>\\s+<span class=\"text-muted\">Bug</span>\\s+<a href='/index.php\\?m=bug&f=view&bugID=\\d+' >.+</a>";
         Matcher matcher = Pattern.compile(bugPattern).matcher(htmlText);
         List<BugDetail> bugDetails = new ArrayList<>();
@@ -71,9 +72,26 @@ public class BugServiceImpl implements BugService {
      * @param time
      * @return
      */
-    private String getDynamicHtmlText(String cookie, String time) {
+    private List<String> getDynamicHtmlText(String cookie, String time) {
+        List<String> htmlTexts = new ArrayList<>();
         String url = String.format(confParams.get(ConfParamConstant.DOMAIN_URL) + ZendaoConstant.DYNAMIC_QUERY_URL, time);
-        return HttpUtil.createPost(url).header("cookie", cookie).execute().body();
+        String text;
+        do {
+            text = HttpUtil.createPost(url).header("cookie", cookie).execute().body();
+            htmlTexts.add(text);
+        } while (!ObjectUtil.isEmpty(url = this.getPrevPageUrl(text)));
+        return htmlTexts;
+    }
+
+    /**
+     * 获取前一页地址数据
+     * @param text
+     * @return
+     */
+    private String getPrevPageUrl(String text) {
+        String prePagePattern = "<a id=\"prevPage\" class=\"btn btn-info\".*?>";
+        Matcher matcher = Pattern.compile(prePagePattern).matcher(text);
+        return matcher.find() ? confParams.get(ConfParamConstant.DOMAIN_URL) + matcher.group(0).replaceAll(".*href=\"(.*)\".*", "$1") : "";
     }
 
     /**

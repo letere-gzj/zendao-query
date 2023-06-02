@@ -70,7 +70,7 @@ public class PrintServiceImpl implements PrintService {
         System.out.print("是否导出为txt文件(y:是, n:否)：");
         boolean isExportFile = Objects.equals(scanner.nextLine(), BooleanEnum.YES.getValue());
         if (isExportFile) {
-            this.printFileExport(bugDetails, queryTypeEnum);
+            this.printFileExport(bugDetails, queryTypeEnum, time);
         }
     }
 
@@ -131,8 +131,8 @@ public class PrintServiceImpl implements PrintService {
      * @param bugDetails bug集合
      * @param queryTypeEnum 查询方式
      */
-    private void printFileExport(List<BugDetail> bugDetails, QueryTypeEnum queryTypeEnum) {
-        if (fileService.exportToTxt(bugDetails, queryTypeEnum)) {
+    private void printFileExport(List<BugDetail> bugDetails, QueryTypeEnum queryTypeEnum, TimeEnum timeEnum) {
+        if (fileService.exportToTxt(bugDetails, queryTypeEnum, timeEnum)) {
             System.out.println("导出成功");
             try {
                 Desktop.getDesktop().open(new File(ZendaoConstant.FILE_EXPORT_PATH));

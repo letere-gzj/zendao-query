@@ -1,6 +1,7 @@
 package service;
 
 import constant.QueryTypeEnum;
+import constant.TimeEnum;
 import entity.BugDetail;
 
 import java.util.List;
@@ -14,12 +15,15 @@ public interface FileService {
 
     /**
      * 导出为txt
-     * @param bugDetails bug集合
+     *
+     * @param bugDetails    bug集合
      * @param queryTypeEnum 查询类型(1：简易, 2:详细)
+     * @param timeEnum
      * @return
      */
     boolean exportToTxt(List<BugDetail> bugDetails,
-                     QueryTypeEnum queryTypeEnum);
+                        QueryTypeEnum queryTypeEnum,
+                        TimeEnum timeEnum);
 
     /**
      * 加载配置文件
