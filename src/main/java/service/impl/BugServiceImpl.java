@@ -42,7 +42,7 @@ public class BugServiceImpl implements BugService {
     @Override
     public void fillBugDetails(List<BugDetail> bugDetails) {
         for (BugDetail bugDetail : bugDetails) {
-            String bugDetailHtmlText = this.getBugDetailHtmlText(ConfParamConstant.COOKIE, bugDetail.getBugId());
+            String bugDetailHtmlText = this.getBugDetailHtmlText(confParams.get(ConfParamConstant.COOKIE), bugDetail.getBugId());
             this.fillBugDetail(bugDetailHtmlText, bugDetail);
         }
     }
@@ -123,6 +123,4 @@ public class BugServiceImpl implements BugService {
         bugDetail.setProductName(productName);
         bugDetail.setPriority(Integer.valueOf(priority));
     }
-
-
 }

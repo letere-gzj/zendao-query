@@ -32,20 +32,7 @@ public class FileServiceImpl implements FileService {
         if (CollectionUtil.isEmpty(bugDetails)) {
             return false;
         }
-        // 拼接导出的文本内容
-        String context;
-        if (Objects.equals(queryTypeEnum, QueryTypeEnum.SIMPLE)) {
-            context = bugDetails.stream().map(BugDetail::getBugDesc)
-                    .collect(Collectors.joining("\n"));
-        }
-        else if (Objects.equals(queryTypeEnum, QueryTypeEnum.DETAIL)) {
-            context = bugDetails.stream().map(x -> StrUtil.fillWithBlank(x.getProductName(), 5) + '\t' + x.getPriority() + '\t' + x.getBugDesc())
-                    .collect(Collectors.joining("\n"));
-        }
-        else {
-            throw new RuntimeException("queryType参数错误");
-        }
-        // 导出为txt
+        // 拼接文件名
         String fileName;
         switch (timeEnum) {
             case TODAY:
@@ -62,6 +49,22 @@ public class FileServiceImpl implements FileService {
             default:
                 throw new RuntimeException("time参数错误");
         }
+        // 拼接导出的文本内容
+        String context;
+        if (Objects.equals(queryTypeEnum, QueryTypeEnum.SIMPLE)) {
+            fileName += "_简易";
+            context = bugDetails.stream().map(BugDetail::getBugDesc)
+                    .collect(Collectors.joining("\n"));
+        }
+        else if (Objects.equals(queryTypeEnum, QueryTypeEnum.DETAIL)) {
+            fileName += "_详细";
+            context = bugDetails.stream().map(x -> StrUtil.fillWithBlank(x.getProductName(), 5) + '\t' + x.getPriority() + '\t' + x.getBugDesc())
+                    .collect(Collectors.joining("\n"));
+        }
+        else {
+            throw new RuntimeException("queryType参数错误");
+        }
+        // 导出为txt
         FileWriter fileWriter = new FileWriter(ZendaoConstant.FILE_EXPORT_PATH + "/"+ fileName +".txt");
         fileWriter.write(context);
         return true;
