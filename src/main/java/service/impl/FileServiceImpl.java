@@ -69,21 +69,4 @@ public class FileServiceImpl implements FileService {
         fileWriter.write(context);
         return true;
     }
-
-    @Override
-    public Map<String, String> loadConfFile() {
-        String conf;
-        try {
-            conf = IoUtil.read(new FileReader(ZendaoConstant.CONF_PATH));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        String[] paramStrs = conf.split("\r\n");
-        Map<String, String> paramMap = new HashMap<>();
-        for (String paramStr : paramStrs) {
-            String[] param = paramStr.split(": ");
-            paramMap.put(param[0], param[1]);
-        }
-        return paramMap;
-    }
 }

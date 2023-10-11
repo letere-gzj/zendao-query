@@ -23,6 +23,11 @@ public interface ZendaoConstant {
     String BUG_QUERY_URL = "/index.php?m=bug&f=view&bugID=%s";
 
     /**
+     * 禅道任务详情查询地址
+     */
+    String TASK_QUERY_URL = "/index.php?m=task&f=view&taskID=%s";
+
+    /**
      * 配置文件路径
      */
     String CONF_PATH = "./conf/bug.conf";

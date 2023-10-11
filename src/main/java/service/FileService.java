@@ -24,10 +24,4 @@ public interface FileService {
     boolean exportToTxt(List<BugDetail> bugDetails,
                         QueryTypeEnum queryTypeEnum,
                         TimeEnum timeEnum);
-
-    /**
-     * 加载配置文件
-     * @return
-     */
-    Map<String, String> loadConfFile();
 }

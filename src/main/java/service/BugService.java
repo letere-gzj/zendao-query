@@ -11,15 +11,14 @@ import java.util.List;
 public interface BugService {
     /**
      * 查询bug列表
-     * @param time
-     * @return
+     * @param htmlTexts html文本集合
+     * @return bug集合
      */
-    List<BugDetail> getBugDetails(String time);
+    List<BugDetail> listBugDetail(List<String> htmlTexts);
 
     /**
      * 填充bug详情
-     *
-     * @param bugDetails
+     * @param bugDetails bug详情集合
      */
     void fillBugDetails(List<BugDetail> bugDetails);
 }
